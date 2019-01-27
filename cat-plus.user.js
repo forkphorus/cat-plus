@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Cat Plus
-// @version 0.0.2
+// @version 0.0.3
 // @namespace GarboMuffin
 // @match https://scratch.mit.edu/*
 // @grant GM_addStyle
@@ -143,38 +143,41 @@ if (GM_getValue('legibleWatchers', false)) {
 }
 
 if (GM_getValue('coloredContextMenus', false)) {
-  let widgetDiv = document.querySelector('.blocklyWidgetDiv');
-  let blocklyCanvas = document.querySelector('.blocklyBlockCanvas');
-  let blocklyMainBackground = document.querySelector('.blocklyMainBackground');
-  if (!widgetDiv || !blocklyCanvas) {
-    return;
-  }
+  // let blocklyCanvas = document.querySelector('.blocklyBlockCanvas');
   let reset = function() {
+    const widgetDiv = document.querySelector('.blocklyWidgetDiv');
+    if (!widgetDiv) {
+      return;
+    }
     widgetDiv.style.setProperty('--cp-context-menu-bg', 'white');
     widgetDiv.classList.remove('cp-contextmenu-ok');
   };
-  blocklyCanvas.addEventListener('mousedown', function(e) {
-    if (e.buttons !== 2) {
-      return;
+  document.body.addEventListener('mousedown', function(e) {
+    if (e.button !== 2) {
+      return reset();
+    }
+    if (e.target.closest('.blocklyMainBackground')) {
+      return reset();
     }
     const block = e.target.closest('.blocklyDraggable');
     if (!block) {
-      return reset();
+      return;
     }
     const background = block.querySelector('.blocklyBlockBackground');
     if (!background) {
-      return reset();
+      return;
     }
     const fill = background.getAttribute('fill');
     if (!fill) {
-      return reset();
+      return;
+    }
+    const widgetDiv = document.querySelector('.blocklyWidgetDiv');
+    if (!widgetDiv) {
+      return;
     }
     widgetDiv.classList.add('cp-contextmenu-ok');
     widgetDiv.style.setProperty('--cp-context-menu-bg', fill);
-  });
-  blocklyMainBackground.addEventListener('mousedown', function(e) {
-    reset();
-  });
+  }, true);
 
   GM_addStyle(`
   .blocklyWidgetDiv.cp-contextmenu-ok .blocklyContextMenu {
