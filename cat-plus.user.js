@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Cat Plus
-// @version 0.0.1
+// @version 0.0.2
 // @namespace GarboMuffin
 // @match https://scratch.mit.edu/*
 // @grant GM_addStyle
@@ -13,18 +13,21 @@
 
 'use strict';
 
-if (location.hash === '#c3-options') {
+if (location.hash === '#catplus-options') {
   const el = document.createElement('div');
 
   el.innerHTML = `
-  <div><b>cat cat cat options</b></div>
+  <div><b>cat plus options</b></div>
   <div>Changes are automatically saved. Refresh to apply. This will eventually be prettier.</div>
-  <div><label><input type="checkbox" c3-bind="leftSideStage"> left side stage?</label></div>
-  <div><label><input type="checkbox" c3-bind="compactEditor"> compact[er] editor?</label></div>
+  <div><label><input type="checkbox" c-bind="leftSideStage"> left side stage?</label></div>
+  <div><label><input type="checkbox" c-bind="compactEditor"> compacter editor sprite list?</label></div>
+  <div><label><input type="checkbox" c-bind="unroundedStage"> unrounded stage corners?</label></div>
+  <div><label><input type="checkbox" c-bind="legibleWatchers"> more legible variable watchers (darker text)?</label></div>
+  <div><label><input type="checkbox" c-bind="coloredContextMenus"> colored context menus?</label></div>
   `;
 
-  for (const i of el.querySelectorAll('[c3-bind]')) {
-    const bind = i.getAttribute('c3-bind');
+  for (const i of el.querySelectorAll('[c-bind]')) {
+    const bind = i.getAttribute('c-bind');
     i.onchange = function() {
       GM_setValue(bind, i.checked);
     };
@@ -117,6 +120,74 @@ if (GM_getValue('compactEditor', false)) {
 
   .sprite-selector_scroll-wrapper_3NNnc {
     height: 100%;
+  }
+  `);
+}
+
+if (GM_getValue('unroundedStage', false)) {
+  GM_addStyle(`
+  .stage_stage_1fD7k.box_box_2jjDp,
+  .stage_green-flag-overlay-wrapper_2hUi_ {
+    border-radius: 0;
+  }
+  `);
+}
+
+if (GM_getValue('legibleWatchers', false)) {
+  GM_addStyle(`
+  .monitor_label_ci1ok,
+  .monitor_list-header_-cp0o {
+    color: #000;
+  }
+  `);
+}
+
+if (GM_getValue('coloredContextMenus', false)) {
+  let widgetDiv = document.querySelector('.blocklyWidgetDiv');
+  let blocklyCanvas = document.querySelector('.blocklyBlockCanvas');
+  let blocklyMainBackground = document.querySelector('.blocklyMainBackground');
+  if (!widgetDiv || !blocklyCanvas) {
+    return;
+  }
+  let reset = function() {
+    widgetDiv.style.setProperty('--cp-context-menu-bg', 'white');
+    widgetDiv.classList.remove('cp-contextmenu-ok');
+  };
+  blocklyCanvas.addEventListener('mousedown', function(e) {
+    if (e.buttons !== 2) {
+      return;
+    }
+    const block = e.target.closest('.blocklyDraggable');
+    if (!block) {
+      return reset();
+    }
+    const background = block.querySelector('.blocklyBlockBackground');
+    if (!background) {
+      return reset();
+    }
+    const fill = background.getAttribute('fill');
+    if (!fill) {
+      return reset();
+    }
+    widgetDiv.classList.add('cp-contextmenu-ok');
+    widgetDiv.style.setProperty('--cp-context-menu-bg', fill);
+  });
+  blocklyMainBackground.addEventListener('mousedown', function(e) {
+    reset();
+  });
+
+  GM_addStyle(`
+  .blocklyWidgetDiv.cp-contextmenu-ok .blocklyContextMenu {
+    background-color: var(--cp-context-menu-bg);
+  }
+  .blocklyWidgetDiv.cp-contextmenu-ok .blocklyContextMenu .goog-menuitem {
+    color: white;
+  }
+  .blocklyWidgetDiv.cp-contextmenu-ok .blocklyContextMenu .goog-menuitem:hover.goog-menuitem-highlight {
+    border-color: transparent;
+  }
+  .blocklyWidgetDiv.cp-contextmenu-ok .blocklyContextMenu .goog-menuitem:hover {
+    background-color: rgba(0, 0, 0, 0.2);
   }
   `);
 }
