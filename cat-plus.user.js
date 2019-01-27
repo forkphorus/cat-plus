@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Cat Plus
-// @version 0.0.3
+// @version 0.0.3.1
 // @namespace GarboMuffin
 // @match https://scratch.mit.edu/*
 // @grant GM_addStyle
@@ -143,21 +143,17 @@ if (GM_getValue('legibleWatchers', false)) {
 }
 
 if (GM_getValue('coloredContextMenus', false)) {
-  // let blocklyCanvas = document.querySelector('.blocklyBlockCanvas');
-  let reset = function() {
+  document.body.addEventListener('mousedown', function(e) {
     const widgetDiv = document.querySelector('.blocklyWidgetDiv');
     if (!widgetDiv) {
       return;
     }
-    widgetDiv.style.setProperty('--cp-context-menu-bg', 'white');
-    widgetDiv.classList.remove('cp-contextmenu-ok');
-  };
-  document.body.addEventListener('mousedown', function(e) {
     if (e.button !== 2) {
-      return reset();
+      return;
     }
     if (e.target.closest('.blocklyMainBackground')) {
-      return reset();
+      widgetDiv.style.setProperty('--cp-context-menu-bg', 'white');
+      widgetDiv.classList.remove('cp-contextmenu-ok');
     }
     const block = e.target.closest('.blocklyDraggable');
     if (!block) {
@@ -169,10 +165,6 @@ if (GM_getValue('coloredContextMenus', false)) {
     }
     const fill = background.getAttribute('fill');
     if (!fill) {
-      return;
-    }
-    const widgetDiv = document.querySelector('.blocklyWidgetDiv');
-    if (!widgetDiv) {
       return;
     }
     widgetDiv.classList.add('cp-contextmenu-ok');
