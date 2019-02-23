@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Searchable Dropdowns for Scratch 3
-// @version 0.1.1
+// @version 0.1.2
 // @namespace https://github.com/forkphorus/cat-plus
 // @match https://scratch.mit.edu/projects/*
 // @grant GM_addStyle
@@ -59,7 +59,7 @@ function getDropDownMenu() {
 function getItems() {
   const el = getDropDownMenu();
   if (el) {
-    return el.children
+    return Array.from(el.children).filter((child) => child.tagName !== 'INPUT');
   }
   return [];
 }
