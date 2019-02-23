@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Searchable Dropdowns for Scratch 3
-// @version 0.1
+// @version 0.1.1
 // @namespace https://github.com/forkphorus/cat-plus
 // @match https://scratch.mit.edu/projects/*
 // @grant GM_addStyle
@@ -25,7 +25,8 @@ function addSearch() {
   el.type = 'text';
   el.addEventListener('input', search);
   el.classList.add('u-dropdown-searchbar');
-  getDropDownContentElement().insertBefore(el, getDropDownContentElement().firstChild);
+  const container = getDropDownMenu();
+  container.insertBefore(el, container.firstChild);
   el.focus();
 
   for (const child of getItems()) {
@@ -35,7 +36,6 @@ function addSearch() {
 
 function search(e) {
   const value = e.target.value.toLowerCase();
-
   for (const child of getItems()) {
     const text = child.textContent.toLowerCase();
     const contains = text.includes(value);
@@ -49,14 +49,19 @@ function getDropDownContentElement() {
     return cachedDropDownContentElement;
   }
   cachedDropDownContentElement = document.querySelector('.blocklyDropDownContent');
-  cachedDropDownContentElement.addEventListener('mousemove', (e) => {
-    // cachedDropDownContentElement.querySelector('.u-dropdown-searchbar').focus();
-  });
   return cachedDropDownContentElement;
 }
 
+function getDropDownMenu() {
+  return getDropDownContentElement().querySelector('.blocklyDropdownMenu')
+}
+
 function getItems() {
-  return getDropDownContentElement().querySelector('.blocklyDropdownMenu').children;
+  const el = getDropDownMenu();
+  if (el) {
+    return el.children
+  }
+  return [];
 }
 
 const observer = new MutationObserver(callback);
@@ -66,10 +71,8 @@ observer.observe(document.body, {
 });
 
 GM_addStyle(`
-.u-dropdown-searchbar:hover {
-  background-color: hsla(0, 100%, 100%, 0.5);
-}
 .u-dropdown-searchbar {
+  /* seems to always fill the entire thing without making a horizontal scrollbar */
   width: calc(100% - 20px);
   /* based on styles for the title input */
   color: white;
@@ -80,6 +83,14 @@ GM_addStyle(`
   transition: 0.25s ease-out;
   font-size: 13px;
   font-weight: bold;
+  border-radius: 4px;
+}
+.u-dropdown-searchbar:hover {
+  background-color: hsla(0, 100%, 100%, 0.5);
+}
+.u-dropdown-searchbar:focus {
+  background-color: white;
+  color: black;
 }
 
 [data-visible="false"] {
