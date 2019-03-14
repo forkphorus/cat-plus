@@ -11,7 +11,7 @@ Userscripts that improve Scratch 3.
    * Adds a searchbar to all dropdown menus
  * [Unrounded Stage](https://github.com/forkphorus/cat-plus/raw/master/unrounded-stage.user.js)
    * Removes curved corners from the project player (similar to Scratch 2)
- * [Right Side Flag](https://github.com/forkphorus/cat-plus/raw/master/right-side-flag.js)
+ * [Right Side Flag](https://github.com/forkphorus/cat-plus/raw/master/right-side-flag.user.js)
    * Moves the green flag and stop sign to the right side of the project player (similar to Scratch 2)
 
 Install a userscript manager such as TamperMonkey or ViolentMonkey if you haven't already, then simply click on the links above and confirm the installation. Scripts should be automatically updated by default.
