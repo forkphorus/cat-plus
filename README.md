@@ -9,8 +9,10 @@ Userscripts that improve Scratch 3.
    * Colors context menus to match the block you clicked on (similar to Scratch 2)
  * [Searchable Dropdowns](https://github.com/forkphorus/cat-plus/raw/master/searchable-dropdowns.user.js)
    * Adds a searchbar to all dropdown menus
+ * [Bold Blocks](https://github.com/forkphorus/cat-plus/raw/master/bold-blocks.user.js)
+   * Makes text in the editor bold and easier to read
  * [Unrounded Stage](https://github.com/forkphorus/cat-plus/raw/master/unrounded-stage.user.js)
-   * Removes curved corners from the project player (similar to Scratch 2)
+   * Removes rounded corners from the project player (similar to Scratch 2)
  * [Right Side Flag](https://github.com/forkphorus/cat-plus/raw/master/right-side-flag.user.js)
    * Moves the green flag and stop sign to the right side of the project player (similar to Scratch 2)
 
