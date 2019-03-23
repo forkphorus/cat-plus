@@ -15,6 +15,8 @@ Userscripts that improve Scratch 3.
    * Removes rounded corners from the project player (similar to Scratch 2)
  * [Right Side Flag](https://github.com/forkphorus/cat-plus/raw/master/right-side-flag.user.js)
    * Moves the green flag and stop sign to the right side of the project player (similar to Scratch 2)
+ * [Extra Metadata](https://github.com/forkphorus/cat-plus/raw/master/extra-metadat.user.js)
+   * Allows you to find out more about when projects were created or modified. (hit the "..." by the share date)
 
 Install a userscript manager such as TamperMonkey or ViolentMonkey if you haven't already, then simply click on the links above and confirm the installation. Scripts should be automatically updated by default.
 
