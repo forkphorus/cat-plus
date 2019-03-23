@@ -13,7 +13,7 @@ Userscripts that improve Scratch 3.
    * Makes text in the editor bold and easier to read
  * [Compact(er) Editor](https://github.com/forkphorus/cat-plus/raw/master/compact-editor.user.js)
    * Makes the Scratch 3 editor ever so slightly more compact.
- * [Extra Metadata](https://github.com/forkphorus/cat-plus/raw/master/extra-metadat.user.js)
+ * [Extra Metadata](https://github.com/forkphorus/cat-plus/raw/master/extra-metadata.user.js)
    * Allows you to find out more about when projects were created or modified. (hit the "..." by the share date)
  * [Unrounded Stage](https://github.com/forkphorus/cat-plus/raw/master/unrounded-stage.user.js)
    * Removes rounded corners from the project player (similar to Scratch 2)
