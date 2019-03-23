@@ -11,12 +11,14 @@ Userscripts that improve Scratch 3.
    * Adds a searchbar to all dropdown menus
  * [Bold Blocks](https://github.com/forkphorus/cat-plus/raw/master/bold-blocks.user.js)
    * Makes text in the editor bold and easier to read
+ * [Compact(er) Editor](https://github.com/forkphorus/cat-plus/raw/master/compact-editor.user.js)
+   * Makes the Scratch 3 editor ever so slightly more compact.
+ * [Extra Metadata](https://github.com/forkphorus/cat-plus/raw/master/extra-metadat.user.js)
+   * Allows you to find out more about when projects were created or modified. (hit the "..." by the share date)
  * [Unrounded Stage](https://github.com/forkphorus/cat-plus/raw/master/unrounded-stage.user.js)
    * Removes rounded corners from the project player (similar to Scratch 2)
  * [Right Side Flag](https://github.com/forkphorus/cat-plus/raw/master/right-side-flag.user.js)
    * Moves the green flag and stop sign to the right side of the project player (similar to Scratch 2)
- * [Extra Metadata](https://github.com/forkphorus/cat-plus/raw/master/extra-metadat.user.js)
-   * Allows you to find out more about when projects were created or modified. (hit the "..." by the share date)
 
 Install a userscript manager such as TamperMonkey or ViolentMonkey if you haven't already, then simply click on the links above and confirm the installation. Scripts should be automatically updated by default.
 
