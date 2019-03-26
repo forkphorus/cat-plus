@@ -1,84 +1,114 @@
 // ==UserScript==
 // @name Extra Metadata for Scratch 3
 // @description Adds extra metadata to the Scratch 3 interface
-// @version 0.1.1
+// @version 0.1.2
 // @namespace https://github.com/forkphorus/cat-plus
 // @homepageURL https://github.com/forkphorus/cat-plus#readme
 // @match https://scratch.mit.edu/projects/*
 // ==/UserScript==
 
-window.addEventListener('load', function() {
-  var shareDate = document.querySelector('.share-date');
-  if (!shareDate) {
+'use strict';
+
+/**
+ * @param {Date} date Date
+ * @returns {string} Human readable date.
+ */
+function dateToString(date) {
+  return date.toLocaleString();
+}
+
+function handleProjectPage() {
+  if (location.pathname.includes('editor')) {
     return;
   }
 
-  var created;
-  var shared;
-  var modified;
+  /**
+   * @typedef {Object} ProjectData
+   * @property {Date} created
+   * @property {Date} modified
+   * @property {Date} shared
+   * @property {number} comments
+   */
 
+  /**
+   * @type {ProjectData}
+   */
+  var projectData = {};
+
+  /**
+   * @returns {string} The project ID, if any.
+   */
   function getProjectId() {
     const re = location.pathname.match(/\/projects\/(\d*)/);
     return re[1];
   }
 
-  function dateToString(date) {
-    return date.toLocaleString();
+  /**
+   * @param {ProjectData} id 
+   */
+  function getProjectData(id) {
+    return fetch('https://api.scratch.mit.edu/projects/' + id)
+      .then((r) => r.json())
+      .then((data) => {
+        return {
+          created: new Date(data.history.created),
+          shared: new Date(data.history.shared),
+          modified: new Date(data.history.modified),
+          comments: data.stats.comments,
+        };
+      });
   }
 
-  function onResize() {
-    addButton();
-  }
-
-  function showInfo() {
+  function showDateInformation() {
     let text = '';
-    text += 'Created: ' + dateToString(created) + '\n';
-    text += 'Shared: ' + dateToString(shared) + '\n';
-    text += 'Modified: ' + dateToString(modified);
+    text += 'Created: ' + dateToString(projectData.created) + '\n';
+    text += 'Shared: ' + dateToString(projectData.shared) + '\n';
+    text += 'Modified: ' + dateToString(projectData.modified);
     alert(text);
   }
 
-  function addButton() {
-    shareDate = document.querySelector('.share-date');
-    if (!shareDate) {
-      return;
-    }
-    const dateContainer = shareDate.querySelector('span');
-    if (!dateContainer) {
-      return;
-    }
-    if (dateContainer.querySelector('.u-button')) {
-      return;
-    }
+  function addDateElement() {
+    const shareDate = document.querySelector('.share-date');
+    if (!shareDate) return;
 
+    const dateContainer = shareDate.querySelector('span');
+    if (!dateContainer || dateContainer._extraMetadata) return;
+
+    dateContainer._extraMetadata = true;
     dateContainer.textContent += ' ';
     const button = document.createElement('a');
     button.textContent = '\u2026';
-    button.classList.add('u-button');
     button.title = 'More information about dates';
-    button.onclick = showInfo;
+    button.onclick = showDateInformation;
     dateContainer.appendChild(button);
   }
 
-  const projectId = getProjectId();
-  if (!projectId) {
-    return;
+  function addCommentsElement() {
+    const commentsHeader = document.querySelector('.comments-header');
+    if (!commentsHeader) return;
+
+    const commentsHeaderText = commentsHeader.querySelector('span');
+    if (!commentsHeaderText || commentsHeaderText._extraMetadata) return;
+
+    commentsHeaderText._extraMetadata = true;
+    commentsHeaderText.textContent += ' (' + projectData.comments + ')';
   }
 
-  fetch('https://api.scratch.mit.edu/projects/' + projectId)
-    .then((res) => res.json())
-    .then((json) => {
-      const history = json.history;
-      if (!history) {
-        return;
-      }
+  function updateInterface() {
+    addDateElement();
+    addCommentsElement();
+  }
 
-      created = new Date(history.created);
-      shared = new Date(history.shared);
-      modified = new Date(history.modified);
+  const projectId = getProjectId();
+  if (!projectId) return;
 
-      addButton();
-      setInterval(addButton, 1000);
+  getProjectData(projectId).then((data) => {
+    projectData = data;
+    updateInterface();
+    setInterval(updateInterface, 1000);
+  });
+}
 
-    });
+window.addEventListener('load', function() {
+  handleProjectPage();
 });
