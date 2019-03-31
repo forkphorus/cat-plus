@@ -11,6 +11,10 @@ Userscripts that improve Scratch 3.
    * Adds a searchbar to all dropdown menus
  * [Bold Blocks](https://github.com/forkphorus/cat-plus/raw/master/bold-blocks.user.js)
    * Makes text in the editor bold and easier to read
+ * [Make Scratch Projects Shared (Again)](https://github.com/forkphorus/cat-plus/raw/master/make-projects-shared.user.js)
+   * Allows you to view any unshared Scratch project. (including comments and source code)
+   * On an unshared project, a link will appear to bypass the unshared project message. Click on it.
+   * Some project information and commenting will not be available.
  * [Compact(er) Editor](https://github.com/forkphorus/cat-plus/raw/master/compact-editor.user.js)
    * Makes the Scratch 3 editor ever so slightly more compact.
  * [Extra Metadata](https://github.com/forkphorus/cat-plus/raw/master/extra-metadata.user.js)
@@ -21,6 +25,4 @@ Userscripts that improve Scratch 3.
  * [Right Side Flag](https://github.com/forkphorus/cat-plus/raw/master/right-side-flag.user.js)
    * Moves the green flag and stop sign to the right side of the project player (similar to Scratch 2)
 
-Install a userscript manager such as TamperMonkey or ViolentMonkey if you haven't already, then simply click on the links above and confirm the installation. Scripts should be automatically updated by default.
-
-These userscripts function completely independently of each other and without conflicts.
+Install a userscript manager such as TamperMonkey or ViolentMonkey, then simply click on the links above and confirm the installation. Scripts should be automatically updated by default.
