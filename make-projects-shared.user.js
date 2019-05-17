@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Make Scratch Projects Shared
 // @description Allows you to view any Scratch project as if it was shared.
-// @version 1.1
+// @version 1.1.1
 // @namespace https://github.com/forkphorus/cat-plus
 // @homepageURL https://github.com/forkphorus/cat-plus#readme
 // @match https://scratch.mit.edu/projects/*
@@ -124,6 +124,9 @@
         childList: true,
         subtree: true,
       });
+      // kill the observer after 30 seconds because it's not going to be doing very much at that point
+      // it does get killed in run() as well
+      setTimeout(function() { observer.disconnect() }, 30000);
     });
   }
 
