@@ -11,7 +11,7 @@ Userscripts that improve Scratch 3.
    * Adds a searchbar to all dropdown menus
  * [Bold Blocks](https://github.com/forkphorus/cat-plus/raw/master/bold-blocks.user.js)
    * Makes text in the editor bold and easier to read
- * [Make Scratch Projects Shared (Again)](https://github.com/forkphorus/cat-plus/raw/master/make-projects-shared.user.js)
+ * [Make Scratch Projects Shared <!-- Again -->](https://github.com/forkphorus/cat-plus/raw/master/make-projects-shared.user.js)
    * Allows you to view any unshared Scratch project. (including comments and source code)
    * On an unshared project, a link will appear to bypass the unshared project message. Click on it.
    * Some project information and commenting will not be available.
