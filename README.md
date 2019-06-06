@@ -29,3 +29,5 @@ Userscripts that improve Scratch 3.
    * *Might break certain features of the editor, specifically dragging scripts  between sprites. To work around this, use the backpack.*
 
 Install a userscript manager such as TamperMonkey or ViolentMonkey, then simply click on the links above and confirm the installation. Scripts should be automatically updated by default.
+
+Scratch does not currently disallow userscripts or other similar modifications; they just disallow the sharing of them on the Scratch website.
