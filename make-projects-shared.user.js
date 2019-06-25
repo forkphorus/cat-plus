@@ -1,17 +1,19 @@
 // ==UserScript==
 // @name Make Scratch Projects Shared
 // @description Allows you to view any Scratch project as if it was shared.
-// @version 1.1.2
+// @version 1.1.3
 // @namespace https://github.com/forkphorus/cat-plus
 // @homepageURL https://github.com/forkphorus/cat-plus#readme
 // @match https://scratch.mit.edu/projects/*
+// @run-at document-start
 // ==/UserScript==
 
 (function() {
+  'use strict';
 
-  var magic = '#_bypasssharerestrictions_'
+  var magic = '#_bypasssharerestrictions_';
 
-  if (location.hash === magic) {
+  function patch() {
     var nativeMethod = unsafeWindow.XMLHttpRequest.prototype.open;
     unsafeWindow.XMLHttpRequest.prototype.open = function(method, url) {
       if (!method || !url) {
@@ -80,6 +82,7 @@
       }
       return nativeMethod.apply(this, arguments);
     };
+
     // Prevent visiting the user page of "unknown" because we use that but its a real user
     window.addEventListener('load', function(e) {
       var els = document.querySelectorAll('a[href="/users/unknown"]');
@@ -89,49 +92,55 @@
           e.preventDefault();
         });
       }
-    })
-  } else {
-    function realRun() {
-      var hasRun = false;
-      function run() {
-        if (hasRun) return;
-        hasRun = true;
-        if (document.querySelector('.not-available-image')) {
-          var a = document.createElement('a');
-          a.innerText = 'Bypass?';
-          a.style.marginLeft = '5px';
-          a.onclick = function() {
-            location.hash = magic;
-            location.reload();
-          };
-          document.querySelector('.not-available-outer .inner p span').appendChild(a);
-        }
-        observer.disconnect();
+    });
+  }
+
+  function monitor() {
+    var hasRun = false;
+    function run() {
+      if (hasRun) return;
+      hasRun = true;
+      if (document.querySelector('.not-available-image')) {
+        var a = document.createElement('a');
+        a.innerText = 'Bypass?';
+        a.style.marginLeft = '5px';
+        a.onclick = function() {
+          location.hash = magic;
+          location.reload();
+        };
+        document.querySelector('.not-available-outer .inner p span').appendChild(a);
       }
-      // Use a mutation observer to find out when the page element is added
-      var observer = new MutationObserver(function(mutations) {
-        for (var i = 0; i < mutations.length; i++) {
-          var mutation = mutations[i];
-          if (mutation.type !== 'childList') continue;
-          for (var j = 0; j < mutation.addedNodes.length; j++) {
-            if (mutation.addedNodes[j].className === 'page') {
-              run();
-            }
+      observer.disconnect();
+    }
+    // Use a mutation observer to find out when the page element is added
+    var observer = new MutationObserver(function(mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        var mutation = mutations[i];
+        if (mutation.type !== 'childList') continue;
+        for (var j = 0; j < mutation.addedNodes.length; j++) {
+          if (mutation.addedNodes[j].className === 'page') {
+            run();
           }
         }
-      });
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
-      // kill the observer after 30 seconds because it's not going to be doing very much at that point
-      // it does get killed in run() as well
-      setTimeout(function() { observer.disconnect() }, 30000);
-    }
+      }
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+    run();
+    // kill the observer after 30 seconds because it's not going to be doing very much at that point
+    // it does get killed in run() as well
+    setTimeout(function() { observer.disconnect() }, 30000);
+  }
+
+  if (location.hash === magic) {
+    patch();
+  } else {
     if (document.body) {
-      realRun();
+      monitor();
     } else {
-      window.addEventListener('load', realRun);
+      window.addEventListener('load', monitor);
     }
   }
 
